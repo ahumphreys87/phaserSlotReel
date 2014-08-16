@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hello phaser!</title>
+        <script src="phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+
+    window.onload = function() {
+
+        var game = new Phaser.Game(120, 360, Phaser.AUTO, '', { preload: preload, create: create});
+        var reel1;
+        var tile;
+
+        function preload () {
+
+            game.load.image('ham', 'images/ham.png');
+            game.load.image('eggs', 'images/eggs.png');
+            game.load.image('steak', 'images/steak.png');
+            game.load.image('mayonnaise', 'images/mayonnaise.png');
+            game.load.image('bacon', 'images/bacon.png');
+            game.load.image('atkins', 'images/atkins.png');
+            game.load.image('butter', 'images/butter.png');
+            game.load.image('cheese', 'images/cheese.png');
+            game.load.image('drumstick', 'images/drumstick.png');
+
+        }
+
+        function create () {
+          var bmd = game.add.bitmapData(120, 1080);
+
+          var images = [
+            'ham',
+            'eggs',
+            'steak',
+            'mayonnaise',
+            'bacon',
+            'atkins',
+            'butter',
+            'cheese',
+            'drumstick',
+          ];
+
+          var reel1Symbols = [];
+          var ypos = 0;
+
+          for (var x = 0; x < images.length; x++) {
+            bmd.draw(images[game.rnd.integerInRange(0, 8)], 0, ypos);
+            ypos+=120;
+          }
+          game.cache.addBitmapData('reel1', bmd);
+
+          tile = game.add.tileSprite(0, 0, game.stage.bounds.width, 360, game.cache.getBitmapData('reel1'));
+
+          var spinLength = game.rnd.integerInRange(100,300);
+
+          var tween = game.add.tween(tile.tilePosition).to( { y: tile.tilePosition.y+(spinLength*120) }, spinLength*20, Phaser.Easing.Circular.Out, true);
+
+        }
+    };
+
+    </script>
+    <div id="overlay"></div>
+
+    </body>
+</html>
