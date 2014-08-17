@@ -4,6 +4,8 @@
         <meta charset="UTF-8" />
         <title>hello pixi!</title>
         <script src="pixi.js"></script>
+        <script src="TweenLite.min.js"></script>
+        <script src="EasePack.min.js"></script>
     </head>
     <body>
 
@@ -11,6 +13,7 @@
     var stage;
     var renderer;
     var sprites = [];
+    var resetCount = 0;
 
     window.onload = function() {
       // create an new instance of a pixi stage
@@ -71,13 +74,25 @@
     };
 
     function animate() {
-      requestAnimFrame(animate);
+      var animation = requestAnimFrame(animate);
 
       for(var i = 0; i < sprites.length; i++) {
-        sprites[i].y += 10;
+        sprites[i].y += 30;
 
         if (sprites[i].y > 360) {
           sprites[i].y = -840;
+          resetCount++;
+        }
+      }
+
+      if (resetCount > 250) {
+        cancelAnimationFrame(animation);
+
+        for(var i = 0; i < sprites.length; i++) {
+          TweenLite.to(sprites[i].position, 1, {y: sprites[i].y + 600, ease: Bounce.easeOut, onUpdate: function () {
+            renderer.render(stage);
+          }});
+
         }
       }
 
