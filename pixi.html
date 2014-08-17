@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hello pixi!</title>
+        <script src="pixi.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+    var stage;
+    var renderer;
+    var sprites = [];
+
+    window.onload = function() {
+      // create an new instance of a pixi stage
+    	stage = new PIXI.Stage(0x66FF99);
+
+    	// create a renderer instance
+    	renderer = PIXI.autoDetectRenderer(600, 360);
+
+    	// add the renderer view element to the DOM
+    	document.body.appendChild(renderer.view);
+
+      var keys = [
+        'ham',
+        'eggs',
+        'steak',
+        'mayonnaise',
+        'bacon',
+        'atkins',
+        'butter',
+        'cheese',
+        'drumstick'
+      ];
+
+      var images = {
+        'ham': function () { return PIXI.Texture.fromImage("images/ham.png"); },
+        'eggs': function () { return PIXI.Texture.fromImage("images/eggs.png"); },
+        'steak': function () { return PIXI.Texture.fromImage("images/steak.png"); },
+        'mayonnaise': function () { return PIXI.Texture.fromImage("images/mayonnaise.png"); },
+        'bacon': function () { return PIXI.Texture.fromImage("images/bacon.png"); },
+        'atkins': function () { return PIXI.Texture.fromImage("images/atkins.png"); },
+        'butter': function () { return PIXI.Texture.fromImage("images/butter.png"); },
+        'cheese': function () { return PIXI.Texture.fromImage("images/cheese.png"); },
+        'drumstick': function () { return PIXI.Texture.fromImage("images/drumstick.png"); }
+      };
+
+      var reel1Symbols = [];
+      var ypos = -840;
+      var xpos = 0;
+
+      for (var x = 0; x < 50; x++) {
+        var image = keys[Math.ceil(Math.random() * 8)];
+
+        if (x > 0 && x % 10 == 0) {
+          xpos += 120;
+          ypos = -840;
+        }
+
+        sprites[x] = new PIXI.Sprite(images[image]());
+        sprites[x].x = xpos;
+        sprites[x].y = ypos;
+        stage.addChild(sprites[x]);
+
+        ypos += 120;
+      }
+
+      requestAnimFrame(animate);
+
+    };
+
+    function animate() {
+      requestAnimFrame(animate);
+
+      for(var i = 0; i < sprites.length; i++) {
+        sprites[i].y += 10;
+
+        if (sprites[i].y > 360) {
+          sprites[i].y = -840;
+        }
+      }
+
+      // render the stage
+      renderer.render(stage);
+    }
+
+    </script>
+    <div id="overlay"></div>
+
+    </body>
+</html>
